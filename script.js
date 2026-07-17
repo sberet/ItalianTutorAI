@@ -1,4 +1,4 @@
-const words = [
+const words=[
 
 {english:"Hello",italian:"ciao"},
 {english:"Good Morning",italian:"buongiorno"},
@@ -7,69 +7,98 @@ const words = [
 {english:"Please",italian:"per favore"},
 {english:"Water",italian:"acqua"},
 {english:"Bread",italian:"pane"},
-{english:"Wine",italian:"vino"}
+{english:"Wine",italian:"vino"},
+{english:"Friend",italian:"amico"},
+{english:"Family",italian:"famiglia"}
 
 ];
 
-let current = 0;
-let score = 0;
+let remaining=[...words];
 
-function showWord(){
+let score=0;
 
-    document.getElementById("englishWord").innerHTML =
-        words[current].english;
+let totalAsked=0;
 
-    document.getElementById("answer").value="";
-    document.getElementById("answer").focus();
+let currentWord;
+
+function nextWord(){
+
+if(remaining.length===0){
+
+document.getElementById("englishWord").innerHTML="Lesson Finished!";
+
+document.getElementById("result").innerHTML=
+"🏆 Final Score: "+score+" / "+words.length;
+
+return;
+
+}
+
+let random=Math.floor(Math.random()*remaining.length);
+
+currentWord=remaining[random];
+
+remaining.splice(random,1);
+
+document.getElementById("englishWord").innerHTML=currentWord.english;
+
+document.getElementById("answer").value="";
+
+document.getElementById("answer").focus();
+
+document.getElementById("remaining").innerHTML=
+"Words Remaining: "+remaining.length;
 
 }
 
 function checkAnswer(){
 
-    let user =
-    document.getElementById("answer")
-    .value
-    .toLowerCase()
-    .trim();
+let user=document.getElementById("answer").value
+.toLowerCase()
+.trim();
 
-    let correct =
-    words[current].italian;
+let result=document.getElementById("result");
 
-    if(user===correct){
+if(user===currentWord.italian){
 
-        score++;
+score++;
 
-        document.getElementById("result").innerHTML=
-        "✅ Correct!";
+result.className="correct";
 
-    }
+result.innerHTML="✅ Correct!";
 
-    else{
+}
+else{
 
-        document.getElementById("result").innerHTML=
-        "❌ Correct answer: "+correct;
+result.className="incorrect";
 
-    }
-
-    current++;
-
-    document.getElementById("score").innerHTML=
-    "Score: "+score+" / "+current;
-
-    if(current>=words.length){
-
-        document.getElementById("englishWord").innerHTML=
-        "Lesson Complete!";
-
-        document.getElementById("result").innerHTML=
-        "Final Score: "+score+" / "+words.length;
-
-        return;
-
-    }
-
-    setTimeout(showWord,1500);
+result.innerHTML=
+"❌ Correct answer: "+currentWord.italian;
 
 }
 
-showWord();
+totalAsked++;
+
+document.getElementById("score").innerHTML=
+"Score: "+score+" / "+totalAsked;
+
+let percent=(totalAsked/words.length)*100;
+
+document.getElementById("progressBar").style.width=
+percent+"%";
+
+}
+
+document.getElementById("answer").addEventListener("keypress",
+
+function(event){
+
+if(event.key==="Enter"){
+
+checkAnswer();
+
+}
+
+});
+
+nextWord();
