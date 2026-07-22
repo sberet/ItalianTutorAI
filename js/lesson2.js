@@ -1,6 +1,0 @@
-const words=[['Hello','ciao'],['Bread','pane'],['Wine','vino']];
-let r=[...words],c,s=0,a=0;function u(){remain.textContent='Remaining:'+r.length;score.textContent=`Score:${s}/${a}`;
-bar.style.width=(a/words.length*100)+'%';}function nextWord(){if(!r.length){word.textContent='Finished';
-return;}c=r.splice(Math.floor(Math.random()*r.length),1)[0];word.textContent=c[0];ans.value='';submit.disabled=false;u();}
-function check(){submit.disabled=true;if(ans.value.toLowerCase()==c[1]){s++;
-msg.textContent='✅ Correct';}else msg.textContent='❌ '+c[1];a++;u();}ans.onkeydown=e=>{if(e.key==='Enter')check()};nextWord();
